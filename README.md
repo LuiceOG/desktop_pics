@@ -1,8 +1,4 @@
- <p align="center">
-  <img src="extension/icons/icon-128.png" width="96" height="96" alt="Desktop Pics icon">
-</p>
-
-<h1 align="center">Desktop Pics</h1>
+ <h1 align="center">Desktop Pics</h1>
 
 <p align="center">
   <strong>Post pictures in YouTube comments and replies from a desktop browser.</strong>
@@ -25,10 +21,6 @@
   <a href="#privacy">Privacy</a>
 </p>
 
-<p align="center">
-  <img src="screenshots/picker.png" width="720" alt="The picture picker open above a YouTube comment box">
-</p>
-
 ## About
 
 **Desktop Pics** is a browser extension project intended to add picture selection to YouTube comments and replies on desktop.
@@ -40,7 +32,7 @@ YouTube's desktop comment interface does not natively offer the same picture-att
 - **Favorites.** Keep frequently used pictures easy to find.
 - **Simple setup.** Load the extension in Chrome or a compatible Chromium browser.
 
-> **Important:** The original Desktop GIFs extension uses Tenor GIF IDs. Replacing its text and branding does not automatically make ordinary pictures work. Picture uploading and comment handling must be implemented separately.
+> **Important:** Replacing GIF-related text does not automatically make ordinary pictures work. Picture uploading and comment handling must be implemented separately.
 
 ## Install
 
@@ -63,16 +55,12 @@ Desktop Pics is loaded from a ZIP file.
 
 If YouTube is already open, refresh the tab if the Pics button does not appear.
 
-The extension is designed for Chrome and compatible Chromium browsers such as Edge and Brave.
-
-### Updating
+## Updating
 
 1. Download the latest `desktop-pics-chrome.zip`.
 2. Extract the updated files into your extension folder.
 3. Open `chrome://extensions`.
 4. Click **Reload** on the Desktop Pics extension.
-
-Refresh YouTube if the updated interface does not appear.
 
 ## Use
 
@@ -83,31 +71,28 @@ Refresh YouTube if the updated interface does not appear.
 5. Write your comment.
 6. Click YouTube's **Comment** button.
 
-The intended interface allows a picture to be selected alongside comment text. Whether the picture can actually be published depends on the picture-upload and comment-handling implementation.
+Picture publishing depends on the extension having a working upload and comment integration mechanism.
 
 ## Troubleshooting
 
 | Problem | What to try |
 |---|---|
 | No Pics button appears | Refresh the YouTube tab. |
-| Extension cannot be loaded | Make sure you selected the folder containing `manifest.json`. |
-| Picture picker does not open | Reload the extension in `chrome://extensions` and refresh YouTube. |
-| Picture does not appear in the posted comment | Check whether picture uploading and YouTube comment integration are implemented and supported. |
-| Download link does not work | Check the latest release in the GitHub repository. |
+| Extension cannot be loaded | Select the folder containing `manifest.json`. |
+| Picture picker does not open | Reload the extension and refresh YouTube. |
+| Picture does not appear in the posted comment | Check the picture-upload and comment integration implementation. |
+| Download link does not work | Check the repository's Releases page. |
 
 ## Limits
 
 - **Unofficial.** This project is not affiliated with YouTube or Google.
 - **Browser support.** Intended for Chrome and compatible Chromium browsers.
-- **Picture support requires implementation.** Renaming GIF-related labels does not add image uploading.
+- **Picture support requires implementation.** Changing labels alone does not add image uploading.
 - **YouTube compatibility.** YouTube may change its website or reject unsupported comment requests.
-- **Comment types.** Support for replies, existing-comment editing, and channel posts depends on the implementation.
 
 ## How it works
 
-The extension adds a picture-selection interface to the YouTube comment area. A complete implementation must provide a way to upload or host selected pictures and a compatible method of displaying them in comments.
-
-The original Desktop GIFs request-rewriting mechanism relies on Tenor-specific GIF IDs. Ordinary pictures cannot be supported merely by replacing those IDs with image URLs.
+The extension adds a picture-selection interface to the YouTube comment area. A complete implementation needs a way to upload or host selected pictures and a compatible method of displaying them in comments.
 
 ## Project structure
 
@@ -119,17 +104,13 @@ The original Desktop GIFs request-rewriting mechanism relies on Tenor-specific G
 | `extension/src/main.js` | Page-side integration, if required |
 | `extension/src/sw.js` | Background tasks, if required |
 
-The exact files and responsibilities should match the actual implementation in the repository.
-
 ## Privacy
 
-The extension should request only the permissions required for its functionality.
-
-- Any external image-hosting service should be clearly documented.
-- Picture storage and transmission depend on the implementation.
-- Do not include analytics or tracking unless explicitly intended and disclosed.
-- Never claim that pictures are stored locally or private unless the code guarantees it.
+- Request only the permissions needed for the extension's functionality.
+- Document any external image-hosting services.
+- Explain how pictures are stored and transmitted.
+- Do not claim pictures are private or stored locally unless the code guarantees it.
 
 ## License
 
-Add a license section here if you choose a license for your project. If you are modifying code from another project, preserve and comply with the original project's license requirements.
+Add a license section if you choose a license for your project. If you modify code from another project, preserve and comply with the original project's license requirements.
