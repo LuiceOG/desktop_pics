@@ -1,55 +1,135 @@
-#!/usr/bin/env python3
-"""Builds the two release ZIPs from the extension folder.
+ <p align="center">
+  <img src="extension/icons/icon-128.png" width="96" height="96" alt="Desktop Pics icon">
+</p>
 
-The folder itself loads in both browsers, but its manifest names a background
-script twice: background.service_worker for Chromium and background.scripts
-for Firefox. Chromium lists the key it does not use as an error on the
-extension's card, which people take for a failed install. Each ZIP therefore
-gets a manifest with only its own browser's keys; every other file is copied
-as it is.
+<h1 align="center">Desktop Pics</h1>
 
-    python3 tools/package.py
+<p align="center">
+  <strong>Post pictures in YouTube comments and replies from a desktop browser.</strong>
+</p>
 
-writes dist/desktop-pics-chrome.zip, each
-with manifest.json at its top level.
-"""
-import json
-import zipfile
-from pathlib import Path
+<p align="center">
+  <a href="https://github.com/LuiceOG/desktop_pics/releases/latest">
+    <img src="https://img.shields.io/github/manifest-json/v/LuiceOG/desktop_pics?filename=extension%2Fmanifest.json&label=version&color=ff0033" alt="Version">
+  </a>
+  <img src="https://img.shields.io/badge/Chrome-121%2B-4285F4?logo=googlechrome&logoColor=white" alt="Chrome 121 or newer">
+  <img src="https://img.shields.io/badge/Manifest-V3-34A853" alt="Manifest V3">
+</p>
 
-ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / 'extension'
-DIST = ROOT / 'dist'
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#use">Use</a> ·
+  <a href="#troubleshooting">Troubleshooting</a> ·
+  <a href="#limits">Limits</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#privacy">Privacy</a>
+</p>
 
+<p align="center">
+  <img src="screenshots/picker.png" width="720" alt="The picture picker open above a YouTube comment box">
+</p>
 
-def chromium(manifest):
-    del manifest['background']['scripts']
-    del manifest['browser_specific_settings']
+## About
 
+**Desktop Pics** is a browser extension project intended to add picture selection to YouTube comments and replies on desktop.
 
-def firefox(manifest):
-    del manifest['background']['service_worker']
-    del manifest['minimum_chrome_version']
+YouTube's desktop comment interface does not natively offer the same picture-attachment experience as its mobile app. Desktop Pics aims to add a **Pics** button next to the emoji button.
 
+- **Picture picker.** Select a picture from the extension's picker.
+- **Write around it.** Write a comment alongside your selected picture.
+- **Favorites.** Keep frequently used pictures easy to find.
+- **Simple setup.** Load the extension in Chrome or a compatible Chromium browser.
 
-def build(name, strip):
-    manifest = json.loads((SRC / 'manifest.json').read_text(encoding='utf-8'))
-    strip(manifest)
-    out = DIST / f'desktop-gifs-{name}.zip'
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
-        z.writestr('manifest.json', json.dumps(manifest, indent=2) + '\n')
-        for path in sorted(SRC.rglob('*')):
-            if path.is_file() and path.name != 'manifest.json':
-                z.write(path, path.relative_to(SRC).as_posix())
-    return out, manifest['version']
+> **Important:** The original Desktop GIFs extension uses Tenor GIF IDs. Replacing its text and branding does not automatically make ordinary pictures work. Picture uploading and comment handling must be implemented separately.
 
+## Install
 
-def main():
-    DIST.mkdir(exist_ok=True)
-    for name, strip in (('chromium', chromium), ('firefox', firefox)):
-        out, version = build(name, strip)
-        print(f'{out.relative_to(ROOT)}  (version {version}, {out.stat().st_size} bytes)')
+Desktop Pics is loaded from a ZIP file.
 
+<p align="center">
+  <a href="https://github.com/LuiceOG/desktop_pics/releases/latest/download/desktop-pics-chrome.zip">
+    <img src="https://img.shields.io/badge/Download-Chrome%20%C2%B7%20Edge%20%C2%B7%20Brave-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Download for Chrome, Edge and Brave">
+  </a>
+</p>
 
-if __name__ == '__main__':
-    main()
+### Chrome, Edge, Brave
+
+1. Download [`desktop-pics-chrome.zip`](https://github.com/LuiceOG/desktop_pics/releases/latest/download/desktop-pics-chrome.zip).
+2. Extract the ZIP file.
+3. Open `chrome://extensions`.
+4. Enable **Developer mode**.
+5. Click **Load unpacked**.
+6. Select the extracted folder containing `manifest.json`.
+
+If YouTube is already open, refresh the tab if the Pics button does not appear.
+
+The extension is designed for Chrome and compatible Chromium browsers such as Edge and Brave.
+
+### Updating
+
+1. Download the latest `desktop-pics-chrome.zip`.
+2. Extract the updated files into your extension folder.
+3. Open `chrome://extensions`.
+4. Click **Reload** on the Desktop Pics extension.
+
+Refresh YouTube if the updated interface does not appear.
+
+## Use
+
+1. Open a YouTube video or Short.
+2. Click **Add a comment…** or **Reply**.
+3. Click the **Pics** button next to the emoji button.
+4. Select a picture.
+5. Write your comment.
+6. Click YouTube's **Comment** button.
+
+The intended interface allows a picture to be selected alongside comment text. Whether the picture can actually be published depends on the picture-upload and comment-handling implementation.
+
+## Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| No Pics button appears | Refresh the YouTube tab. |
+| Extension cannot be loaded | Make sure you selected the folder containing `manifest.json`. |
+| Picture picker does not open | Reload the extension in `chrome://extensions` and refresh YouTube. |
+| Picture does not appear in the posted comment | Check whether picture uploading and YouTube comment integration are implemented and supported. |
+| Download link does not work | Check the latest release in the GitHub repository. |
+
+## Limits
+
+- **Unofficial.** This project is not affiliated with YouTube or Google.
+- **Browser support.** Intended for Chrome and compatible Chromium browsers.
+- **Picture support requires implementation.** Renaming GIF-related labels does not add image uploading.
+- **YouTube compatibility.** YouTube may change its website or reject unsupported comment requests.
+- **Comment types.** Support for replies, existing-comment editing, and channel posts depends on the implementation.
+
+## How it works
+
+The extension adds a picture-selection interface to the YouTube comment area. A complete implementation must provide a way to upload or host selected pictures and a compatible method of displaying them in comments.
+
+The original Desktop GIFs request-rewriting mechanism relies on Tenor-specific GIF IDs. Ordinary pictures cannot be supported merely by replacing those IDs with image URLs.
+
+## Project structure
+
+| File | Purpose |
+|---|---|
+| `extension/manifest.json` | Extension configuration and permissions |
+| `extension/src/content.js` | Comment interface and picture picker |
+| `extension/src/content.css` | Interface styling |
+| `extension/src/main.js` | Page-side integration, if required |
+| `extension/src/sw.js` | Background tasks, if required |
+
+The exact files and responsibilities should match the actual implementation in the repository.
+
+## Privacy
+
+The extension should request only the permissions required for its functionality.
+
+- Any external image-hosting service should be clearly documented.
+- Picture storage and transmission depend on the implementation.
+- Do not include analytics or tracking unless explicitly intended and disclosed.
+- Never claim that pictures are stored locally or private unless the code guarantees it.
+
+## License
+
+Add a license section here if you choose a license for your project. If you are modifying code from another project, preserve and comply with the original project's license requirements.
