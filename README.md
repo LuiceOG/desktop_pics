@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/LuiceOG/desktop_pics/releases/latest">
-    <img src="https://img.shields.io/github/manifest-json/v/LuiceOG/desktop_pics?filename=extension%2Fmanifest.json&label=version&color=ff0033" alt="Version">
+    <img src="https://img.shields.io/github/v/release/LuiceOG/desktop_pics?label=version&color=ff0033" alt="Latest release">
   </a>
   <img src="https://img.shields.io/badge/Chrome-121%2B-4285F4?logo=googlechrome&logoColor=white" alt="Chrome 121 or newer">
   <img src="https://img.shields.io/badge/Manifest-V3-34A853" alt="Manifest V3">
